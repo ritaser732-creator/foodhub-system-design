@@ -33,9 +33,18 @@ The design is implemented as a relational database in [`database/FoodHub.accdb`]
 
 **Tables:** Customers, Stalls, StallFoodTypes, FoodTypes, Dishes, Ingredients, DishIngredients, Allergens, AllergenIngredients, Orders, OrderLines, OrderStatuses, OrderStatusHistory, GroupOrders, GroupParticipants, Payments, PaymentAllocations, StaffMembers, Roles
 
-**Queries:**
-- `qryStallYearRevenue`: yearly revenue per stall
-- `qryMarketYearRevenue`: total yearly revenue of the market
+**Queries** (full SQL in [`database/queries.sql`](database/queries.sql)):
+- `qryMarketYearRevenue`: total market revenue per year
+- `qryStallYearRevenue`: revenue per stall per year (nested `INNER JOIN` of stalls, payments and payment allocations, grouped by year and stall)
+
+```sql
+SELECT Year([PaymentDateTime]) AS RevenueYear,
+       Sum(tblPaymentAllocations.Amount) AS MarketRevenue
+FROM tblPayments
+INNER JOIN tblPaymentAllocations ON tblPayments.PaymentID = tblPaymentAllocations.PaymentID
+GROUP BY Year([PaymentDateTime])
+ORDER BY Year([PaymentDateTime]);
+```
 
 > All data in the database is fictional sample data.
 
