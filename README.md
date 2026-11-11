@@ -36,6 +36,7 @@ The design is implemented as a relational database in [`database/FoodHub.accdb`]
 **Queries** (full SQL in [`database/queries.sql`](database/queries.sql)):
 - `qryMarketYearRevenue`: total market revenue per year
 - `qryStallYearRevenue`: revenue per stall per year (nested `INNER JOIN` of stalls, payments and payment allocations, grouped by year and stall)
+- **Stall revenue share:** each stall's percentage of the market's yearly revenue, built by joining the two queries above
 
 ```sql
 SELECT Year([PaymentDateTime]) AS RevenueYear,

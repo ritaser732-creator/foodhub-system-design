@@ -32,3 +32,18 @@ GROUP BY
 ORDER BY
     Year([tblPayments].[PaymentDateTime]),
     tblStalls.StallNumber;
+
+
+-- Stall share of yearly market revenue (%), built on top of the two queries above
+SELECT
+    qryStallYearRevenue.RevenueYear,
+    qryStallYearRevenue.StallNumber,
+    qryStallYearRevenue.StallName,
+    qryStallYearRevenue.StallRevenue,
+    Round([StallRevenue] / [MarketRevenue] * 100, 2) AS RevenuePct
+FROM
+    qryStallYearRevenue
+    INNER JOIN qryMarketYearRevenue ON qryStallYearRevenue.RevenueYear = qryMarketYearRevenue.RevenueYear
+ORDER BY
+    qryStallYearRevenue.RevenueYear,
+    qryStallYearRevenue.StallNumber;
